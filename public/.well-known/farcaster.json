@@ -1,0 +1,23 @@
+{
+  "miniapp": {
+    "name": "Base Lottery",
+    "version": "1",
+    "iconUrl": "https://baselottery.thinhpm.homes/icon.png",
+    "homeUrl": "https://baselottery.thinhpm.homes",
+    "imageUrl": "https://baselottery.thinhpm.homes/image.png",
+    "buttonTitle": "Play Now",
+    "splashImageUrl": "https://baselottery.thinhpm.homes/splash.png",
+    "splashBackgroundColor": "#020C3A",
+    "webhookUrl": "https://baselottery.thinhpm.homes/api/webhook",
+    "subtitle": "Daily onchain lottery on Base",
+    "description": "Play the daily onchain Base Lottery. Buy tickets, spin, and check if you're the lucky winner!",
+    "primaryCategory": "games",
+    "tags": [
+      "lottery",
+      "game",
+      "onchain",
+      "base",
+      "crypto"
+    ]
+  }
+}
