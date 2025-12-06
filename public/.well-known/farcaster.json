@@ -19,5 +19,10 @@
       "base",
       "crypto"
     ]
+  },
+  "accountAssociation": {
+    "header": "eyJmaWQiOjE5NjAyOCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDBCOTBGOTcwOTk4OEYwYjkzOTcwM2MzMWVjQTRGYUVmMzRiRUQ0NjEifQ",
+    "payload": "eyJkb21haW4iOiJiYXNlbG90dGVyeS50aGluaHBtLmhvbWVzIn0",
+    "signature": "qdY3Z904iwPBu0sS1b77IgZucRCohoKkQ9eUsgJZVegwSIymt5pj90Wap9Ueyuh4DCJe+cco86MBlNFAwDJXHxs="
   }
 }
