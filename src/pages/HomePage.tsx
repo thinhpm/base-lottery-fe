@@ -178,7 +178,7 @@ const HomePage: React.FC<HomePageProps> = ({
             log('Pay & Spin pressed', { tickets });
         } catch (err) {
             log('Pay & Spin failed:', err);
-            setStatusMsg("Transaction failed");
+            setStatusMsg("Pay & Spin");
         }
     }
 
