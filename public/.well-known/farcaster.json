@@ -7,7 +7,7 @@
     "imageUrl": "https://baselottery.thinhpm.homes/image.png",
     "buttonTitle": "Play Now",
     "splashImageUrl": "https://baselottery.thinhpm.homes/splash.png",
-    "splashBackgroundColor": "#020C3A",
+    "splashBackgroundColor": "#fff",
     "webhookUrl": "https://baselottery.thinhpm.homes/api/webhook",
     "subtitle": "Daily onchain lottery on Base",
     "description": "Play the daily onchain Base Lottery. Buy tickets, spin, and check if you're the lucky winner!",

@@ -4,7 +4,7 @@
   "description": "Play the daily onchain Base Lottery. Buy tickets, spin, and check if you're the lucky winner!",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#020C3A",
+  "background_color": "#fff",
   "theme_color": "#1A49FF",
   "orientation": "portrait",
   "icons": [

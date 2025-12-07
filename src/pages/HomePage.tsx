@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import { formatEther } from "viem";
 import { useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi';
+import { sdk } from '@farcaster/miniapp-sdk';
+
 import type{Profile} from '../types';
 import {log} from '../hooks/helper';
 
@@ -32,6 +34,8 @@ const HomePage: React.FC<HomePageProps> = ({
     const [tickets, setTickets] = useState<number>(1);
 
     const [myTicketsToday, setMyTicketsToday] = useState<number[]>();
+    const [boughtTickets, setBoughtTickets] = useState<number>(0);
+
     const [statusMsg, setStatusMsg] = useState<string | null>(null);
     const [txHash, setTxHash] = useState<`0x${string}` | undefined>(undefined);
 
@@ -114,6 +118,7 @@ const HomePage: React.FC<HomePageProps> = ({
         if (receipt && txHash) {
             setStatusMsg("Spin successful!");
             setIsLoading(false);
+            shareBoughtTickets(boughtTickets);
         }
     }, [receiptLoading, receipt]);
 
@@ -144,11 +149,34 @@ const HomePage: React.FC<HomePageProps> = ({
             
             setTxHash(txHash);
             setStatusMsg("Sending Transaction...");
+            setBoughtTickets(tickets);
 
             log('Pay & Spin pressed', { tickets });
         } catch (err) {
             log('Pay & Spin failed:', err);
             setStatusMsg("Transaction failed");
+        }
+    }
+
+    async function shareBoughtTickets(tickets: Number | 1) {
+        if (!tickets) {
+            return
+        }
+        
+        try {
+            // Build the pre-filled message (Markdown-friendly for casts)
+            const message = `I just bought ${tickets} tickets for a chance to win ${Number(formatEther(todayPot as bigint)).toFixed(6)} ETH. Try your luck? Let's play! `;
+            
+            // Canonical Mini App URL (strips query params for clean embed)
+            const embeds: [string] = ["https://baselottery.thinhpm.homes"];
+            const result = await sdk.actions.composeCast({text: message, embeds: embeds})
+
+            console.log(result);
+
+            
+            console.log('Compose screen opened with pre-filled cast');
+        } catch (err) {
+            console.error('Failed to open compose:', err);
         }
     }
 
@@ -171,13 +199,10 @@ const HomePage: React.FC<HomePageProps> = ({
                 <div className="card">
                     <h3>Lottery Stats</h3>
                     <div>
-                        <strong>Day:</strong> {currentDay?.toString()}
+                        <div><strong>Today prize:</strong> {todayPot ? Number(formatEther(todayPot as bigint)).toFixed(6): "0"} ETH</div>
                     </div>
                     <div>
-                        <div><strong>Today prize:</strong> {todayPot ? formatEther(todayPot as bigint): "0"} ETH</div>
-                    </div>
-                    <div>
-                        <div><strong>Ticket price:</strong> $0.1 (~{ticketPrice ? formatEther(ticketPrice as bigint) : "0"} ETH)</div>
+                        <div><strong>Ticket price:</strong> $0.1 ({ticketPrice ? Number(formatEther(ticketPrice as bigint)).toFixed(6) : "0"} ETH)</div>
                     </div>
                     <div>
                         <div><strong>Total tickets (today):</strong> {totalTicketsToday?.toString()}</div>
@@ -188,7 +213,7 @@ const HomePage: React.FC<HomePageProps> = ({
                 </div>
             </div>
             <div className="homepage-card">
-                <h2 className='homepage-card-header'>Pay & Spin</h2>
+                <h3 className='homepage-card-header'>Try your luck?</h3>
                 <div className='card'>
                     <strong>Tickes:</strong>
                     <input type='number' min={1} value={tickets} onChange={(e) => setTickets(Number(e.target.value))}></input>

@@ -65,12 +65,14 @@ body {
 
 /* Avatar */
 .avatar {
-  width: 100%;
-  max-width: 120px;
-  display: block;
-  margin: 0 auto;
-  border-radius: 50%;
-  border: 3px solid white;
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 /* ===== Inner Card (Stats) ===== */
@@ -98,7 +100,7 @@ body {
 
 /* ===== Input and Buttons ===== */
 input[type="number"] {
-  width: 32%;
+    width: 68%;
     margin-left: 12px;
     padding: 10px;
     margin-top: 6px;
