@@ -224,8 +224,8 @@ input[type="number"] {
 }
 
 .ticket-badge {
-    background: #1e90ff22;
-    color: #1e90ff;
+    background: hsla(210, 100%, 56%, 0.133);
+    color: #fff;
     padding: 4px 10px;
     border-radius: 8px;
     font-size: 14px;

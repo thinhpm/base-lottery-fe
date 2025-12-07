@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import { formatEther } from "viem";
-import { useWriteContract, useWaitForTransactionReceipt, useReadContract, useWatchContractEvent } from 'wagmi';
+import { useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi';
 import { sdk } from '@farcaster/miniapp-sdk';
 
 import type{Profile} from '../types';
@@ -82,25 +82,6 @@ const HomePage: React.FC<HomePageProps> = ({
         args: address ? [address] : undefined
     });
 
-    useWatchContractEvent({
-        address: contractAddress,
-        abi: BaseLotteryABI,
-        eventName: "buyTickets",
-        onLogs() {
-            log("buyTickets event detected");
-
-            shareBoughtTickets(boughtTickets);
-
-            refetchTodayPot();
-            refetchUserTickets();
-            refetchTotalTicketsToday();
-
-            log("todaypot", todayPot);
-            log("myTicketstoday", myTicketsToday);
-            log("totalTicketstoday", totalTicketsToday);
-        },
-    });
-
     useEffect(() => {
         if (myTickets && currentDay) {
             let tickets = myTickets as Ticket[];
@@ -135,25 +116,22 @@ const HomePage: React.FC<HomePageProps> = ({
         setIsLoading(false);
     }, [profile, setCurrentPage]);
 
-    // useEffect(() => {
-    //     if (!receipt || !txHash) return;
+    useEffect(() => {
+        if (!receipt || !txHash) return;
 
-    //     setStatusMsg("Pay & Spin");
-    //     setIsLoading(false);
+        // Safely share
+        shareBoughtTickets(boughtTickets);
 
-    //     // Safely share
-    //     shareBoughtTickets(boughtTickets);
+        // Refresh stats
+        refetchTodayPot();
+        refetchUserTickets();
+        refetchTotalTicketsToday();
+        log("receipt:", receipt)
+        log("txHash:", txHash);
+        log("todaypot", todayPot);
+        log("myTicketstoday", myTicketsToday);
 
-    //     // Refresh stats
-    //     refetchTodayPot();
-    //     refetchUserTickets();
-    //     refetchTotalTicketsToday();
-    //     log("receipt:", receipt)
-    //     log("txHash:", txHash);
-    //     log("todaypot", todayPot);
-    //     log("myTicketstoday", myTicketsToday);
-
-    // }, [receipt]);
+    }, [receipt]);
 
     useEffect(() => {
         if (receiptLoading && txHash) {
