@@ -54,7 +54,7 @@ const HomePage: React.FC<HomePageProps> = ({
         address: contractAddress,
         abi: BaseLotteryABI,
         functionName: "getDayPot",
-        args: [currentDay],
+        args: currentDay ? [currentDay] : undefined,
         query: {
             refetchInterval: 60000,
         },
@@ -130,6 +130,8 @@ const HomePage: React.FC<HomePageProps> = ({
         log("txHash:", txHash);
         log("todaypot", todayPot);
         log("myTicketstoday", myTicketsToday);
+        log("totalTicketstoday:", totalTicketsToday);
+        setCurrentPage("home");
 
     }, [receipt]);
 
@@ -180,14 +182,15 @@ const HomePage: React.FC<HomePageProps> = ({
         }
     }
 
-    async function shareBoughtTickets(tickets: Number | 1) {
+    async function shareBoughtTickets(tickets: any) {
         if (!tickets) {
             return
         }
-        let totalValue = Number(ticketPrice as bigint)  * Number(tickets);
-        let total = Number(formatEther(todayPot as bigint)) + totalValue;
+        const totalValue = ticketPrice as bigint * BigInt(tickets as bigint);
+
+        let total = Number(formatEther(todayPot as bigint + totalValue));
         log("prize:", total);
-        return;
+
         try {
             // Build the pre-filled message (Markdown-friendly for casts)
             const message = `I just bought ${tickets} tickets for a chance to win ${Number(total).toFixed(6)} ETH. Try your luck? Let's play! `;
