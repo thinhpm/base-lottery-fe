@@ -134,7 +134,7 @@ const HomePage: React.FC<HomePageProps> = ({
             refetchTodayPot();
             refetchUserTickets();
             refetchTotalTicketsToday();
-            // shareBoughtTickets(boughtTickets);
+            shareBoughtTickets(boughtTickets);
         }
     }, [receiptLoading, receipt]);
 
@@ -180,7 +180,7 @@ const HomePage: React.FC<HomePageProps> = ({
         }
         let total = Number(formatEther(todayPot as bigint)) + Number(formatEther(todayPot as bigint));
         log("prize:", total);
-        
+        return;
         try {
             // Build the pre-filled message (Markdown-friendly for casts)
             const message = `I just bought ${tickets} tickets for a chance to win ${Number(total).toFixed(6)} ETH. Try your luck? Let's play! `;
