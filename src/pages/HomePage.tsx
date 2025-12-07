@@ -125,12 +125,16 @@ const HomePage: React.FC<HomePageProps> = ({
         }
 
         if (receipt && txHash) {
+            log("receipt:", receipt)
+            log("txHash:", txHash);
+            log("todaypot", todayPot);
+            log("myTicketstoday", myTicketsToday);
             setStatusMsg("Pay & Spin");
             setIsLoading(false);
             refetchTodayPot();
             refetchUserTickets();
             refetchTotalTicketsToday();
-            shareBoughtTickets(boughtTickets);
+            // shareBoughtTickets(boughtTickets);
         }
     }, [receiptLoading, receipt]);
 
@@ -222,7 +226,7 @@ const HomePage: React.FC<HomePageProps> = ({
                         <div><strong>Total tickets (today):</strong> {totalTicketsToday?.toString()}</div>
                     </div>
                     <div>
-                        <div><strong>Your tickets (today):</strong> {myTicketsToday?.toString()}</div>
+                        <div><strong>Your tickets (today):</strong> <div>{myTicketsToday?.toString()}</div></div>
                     </div>
                 </div>
             </div>
