@@ -54,7 +54,10 @@ const HomePage: React.FC<HomePageProps> = ({
         address: contractAddress,
         abi: BaseLotteryABI,
         functionName: "getDayPot",
-        args: [currentDay]
+        args: [currentDay],
+        query: {
+            refetchInterval: 3000,
+        },
     });
 
     const { data: ticketPrice } = useReadContract({
@@ -66,7 +69,10 @@ const HomePage: React.FC<HomePageProps> = ({
     const { data: totalTicketsToday, refetch: refetchTotalTicketsToday } = useReadContract({
         address: contractAddress,
         abi: BaseLotteryABI,
-        functionName: "getTotalTicketsToday"
+        functionName: "getTotalTicketsToday",
+        query: {
+            refetchInterval: 3000,
+        },
     });
 
     const { data: myTickets, refetch: refetchUserTickets } = useReadContract({
@@ -74,6 +80,9 @@ const HomePage: React.FC<HomePageProps> = ({
         abi: BaseLotteryABI,
         functionName: "getUserTickets",
         args: address ? [address] : undefined,
+        query: {
+            refetchInterval: 3000,
+        },
     });
 
     useEffect(() => {
@@ -165,10 +174,12 @@ const HomePage: React.FC<HomePageProps> = ({
         if (!tickets) {
             return
         }
+        let total = Number(formatEther(todayPot as bigint)) + Number(formatEther(todayPot as bigint));
+        log("prize:", total);
         
         try {
             // Build the pre-filled message (Markdown-friendly for casts)
-            const message = `I just bought ${tickets} tickets for a chance to win ${Number(formatEther(todayPot as bigint)).toFixed(6)} ETH. Try your luck? Let's play! `;
+            const message = `I just bought ${tickets} tickets for a chance to win ${Number(total).toFixed(6)} ETH. Try your luck? Let's play! `;
             
             // Canonical Mini App URL (strips query params for clean embed)
             const embeds: [string] = ["https://baselottery.thinhpm.homes"];
