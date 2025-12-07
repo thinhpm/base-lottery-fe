@@ -118,10 +118,10 @@ const HomePage: React.FC<HomePageProps> = ({
         if (receipt && txHash) {
             setStatusMsg("Pay & Spin");
             setIsLoading(false);
-            shareBoughtTickets(boughtTickets);
             refetchTodayPot();
             refetchUserTickets();
             refetchTotalTicketsToday();
+            shareBoughtTickets(boughtTickets);
         }
     }, [receiptLoading, receipt]);
 
