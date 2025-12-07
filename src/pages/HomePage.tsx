@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import { formatEther } from "viem";
-import { useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi';
+import { useWriteContract, useWaitForTransactionReceipt, useReadContract, useWatchContractEvent } from 'wagmi';
 import { sdk } from '@farcaster/miniapp-sdk';
 
 import type{Profile} from '../types';
@@ -56,7 +56,7 @@ const HomePage: React.FC<HomePageProps> = ({
         functionName: "getDayPot",
         args: [currentDay],
         query: {
-            refetchInterval: 3000,
+            refetchInterval: 60000,
         },
     });
 
@@ -71,7 +71,7 @@ const HomePage: React.FC<HomePageProps> = ({
         abi: BaseLotteryABI,
         functionName: "getTotalTicketsToday",
         query: {
-            refetchInterval: 3000,
+            refetchInterval: 60000,
         },
     });
 
@@ -79,9 +79,25 @@ const HomePage: React.FC<HomePageProps> = ({
         address: contractAddress,
         abi: BaseLotteryABI,
         functionName: "getUserTickets",
-        args: address ? [address] : undefined,
-        query: {
-            refetchInterval: 3000,
+        args: address ? [address] : undefined
+    });
+
+    useWatchContractEvent({
+        address: contractAddress,
+        abi: BaseLotteryABI,
+        eventName: "buyTickets",
+        onLogs() {
+            log("buyTickets event detected");
+
+            shareBoughtTickets(boughtTickets);
+
+            refetchTodayPot();
+            refetchUserTickets();
+            refetchTotalTicketsToday();
+
+            log("todaypot", todayPot);
+            log("myTicketstoday", myTicketsToday);
+            log("totalTicketstoday", totalTicketsToday);
         },
     });
 
@@ -119,22 +135,34 @@ const HomePage: React.FC<HomePageProps> = ({
         setIsLoading(false);
     }, [profile, setCurrentPage]);
 
+    // useEffect(() => {
+    //     if (!receipt || !txHash) return;
+
+    //     setStatusMsg("Pay & Spin");
+    //     setIsLoading(false);
+
+    //     // Safely share
+    //     shareBoughtTickets(boughtTickets);
+
+    //     // Refresh stats
+    //     refetchTodayPot();
+    //     refetchUserTickets();
+    //     refetchTotalTicketsToday();
+    //     log("receipt:", receipt)
+    //     log("txHash:", txHash);
+    //     log("todaypot", todayPot);
+    //     log("myTicketstoday", myTicketsToday);
+
+    // }, [receipt]);
+
     useEffect(() => {
         if (receiptLoading && txHash) {
             setStatusMsg("Waiting for Confirmation...");
         }
 
         if (receipt && txHash) {
-            log("receipt:", receipt)
-            log("txHash:", txHash);
-            log("todaypot", todayPot);
-            log("myTicketstoday", myTicketsToday);
             setStatusMsg("Pay & Spin");
             setIsLoading(false);
-            refetchTodayPot();
-            refetchUserTickets();
-            refetchTotalTicketsToday();
-            shareBoughtTickets(boughtTickets);
         }
     }, [receiptLoading, receipt]);
 
@@ -178,7 +206,8 @@ const HomePage: React.FC<HomePageProps> = ({
         if (!tickets) {
             return
         }
-        let total = Number(formatEther(todayPot as bigint)) + Number(formatEther(todayPot as bigint));
+        let totalValue = Number(ticketPrice as bigint)  * Number(tickets);
+        let total = Number(formatEther(todayPot as bigint)) + totalValue;
         log("prize:", total);
         return;
         try {
@@ -226,7 +255,16 @@ const HomePage: React.FC<HomePageProps> = ({
                         <div><strong>Total tickets (today):</strong> {totalTicketsToday?.toString()}</div>
                     </div>
                     <div>
-                        <div><strong>Your tickets (today):</strong> <div>{myTicketsToday?.toString()}</div></div>
+                        <div><strong>Your tickets (today):</strong> 
+                        <div className="tickets-list">{myTicketsToday
+                            ?.toString()
+                            .split(",")
+                            .map((item, i) => (
+                                <span key={i} className="ticket-badge">
+                                    {item.trim()}
+                                </span>
+                            ))}</div>
+                        </div>
                     </div>
                 </div>
             </div>
