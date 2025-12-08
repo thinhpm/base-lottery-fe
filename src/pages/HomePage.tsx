@@ -141,7 +141,7 @@ const HomePage: React.FC<HomePageProps> = ({
         }
 
         if (receipt && txHash) {
-            setStatusMsg("Pay & Spin");
+            setStatusMsg("Success! Buy more?");
             setIsLoading(false);
         }
     }, [receiptLoading, receipt]);

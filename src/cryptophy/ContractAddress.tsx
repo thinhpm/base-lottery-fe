@@ -1,7 +1,6 @@
 import { getAddress } from 'viem';
 
-// var address = "0xa8b3d4e50bb4ed085accaa708f914274d9e1187f"
-var address = "0x15D37655dD24d1614254c9cC06BD4f36f82c0227";
+var address = "0xd32f3267725BC62B99f7059FCb94Bbd62cF3B589";
 
 export const contractAddress = getAddress(address);
 

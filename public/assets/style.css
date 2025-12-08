@@ -135,7 +135,7 @@ input[type="number"] {
   background: #00e676;
   border: none;
   border-radius: 16px;
-  font-size: 1.2rem;
+  font-size: 15px;
   font-weight: bold;
   color: black;
   cursor: pointer;
@@ -155,7 +155,7 @@ input[type="number"] {
   background: #00e676;
   border: none;
   border-radius: 16px;
-  font-size: 1.2rem;
+  font-size: 15px;
   font-weight: bold;
   color: black;
   cursor: pointer;
