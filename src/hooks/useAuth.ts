@@ -47,15 +47,6 @@ export const useAuth = (): AuthState => {
                 }
             } catch (error) {
                 log("Init profile failed");
-                // setProfile({
-                //     fid: "196028",
-                //     user_id: 'thinhpm',
-                //     profile_image: 'https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/2b0d804f-665a-4cf3-1743-e739b68b7700/original',
-                //     address: "0x83f27d55e738c0f2a687c2f36cd797db7c32d810",
-                //     token: ""
-                // });
-                // setIsAuthenticated(true);
-                // console.error('Signin failed:', error);
             }
         }
         authenticate();

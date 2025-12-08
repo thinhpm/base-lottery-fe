@@ -194,7 +194,7 @@ const HomePage: React.FC<HomePageProps> = ({
 
         if (!boughtTickets) {
             totalValue = 0;
-            ticketsCurrent = totalTicketsToday ? totalTicketsToday : 0;
+            ticketsCurrent = myTicketsToday ? myTicketsToday.length : 0;
         } else {
             totalValue = ticketPrice as bigint * BigInt(boughtTickets as bigint);
             ticketsCurrent = tickets;
