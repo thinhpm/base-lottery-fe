@@ -8,7 +8,7 @@
     "buttonTitle": "Play Now",
     "splashImageUrl": "https://baselottery.thinhpm.homes/splash.png",
     "splashBackgroundColor": "#fff",
-    "webhookUrl": "https://baselottery.thinhpm.homes/api/webhook",
+    "webhookUrl": "https://api.neynar.com/f/app/dca9bc1c-44f9-49a4-b211-9869175c21c9/event",
     "subtitle": "Daily onchain lottery on Base",
     "description": "Play the daily onchain Base Lottery. Buy tickets, spin, and check if you're the lucky winner!",
     "primaryCategory": "games",
