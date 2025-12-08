@@ -34,7 +34,7 @@ const HomePage: React.FC<HomePageProps> = ({
     const [tickets, setTickets] = useState<number>(1);
 
     const [myTicketsToday, setMyTicketsToday] = useState<number[]>();
-    const [boughtTickets, setBoughtTickets] = useState<number>(0);
+    const [boughtTickets, setBoughtTickets] = useState<bigint>();
 
     const [statusMsg, setStatusMsg] = useState<string | null>(null);
     const [txHash, setTxHash] = useState<`0x${string}` | undefined>(undefined);
@@ -120,7 +120,7 @@ const HomePage: React.FC<HomePageProps> = ({
         if (!receipt || !txHash) return;
 
         // Safely share
-        shareBoughtTickets(boughtTickets);
+        // shareBoughtTickets(boughtTickets);
 
         // Refresh stats
         refetchTodayPot();
@@ -173,7 +173,7 @@ const HomePage: React.FC<HomePageProps> = ({
             
             setTxHash(txHash);
             setStatusMsg("Sending Transaction...");
-            setBoughtTickets(tickets);
+            setBoughtTickets(BigInt(tickets));
 
             log('Pay & Spin pressed', { tickets });
         } catch (err) {
@@ -182,27 +182,29 @@ const HomePage: React.FC<HomePageProps> = ({
         }
     }
 
-    async function shareBoughtTickets(tickets: any) {
-        if (!tickets) {
-            return
-        }
-        const totalValue = ticketPrice as bigint * BigInt(tickets as bigint);
+    async function shareBoughtTickets() {
+        let totalValue;
+        let ticketsCurrent;
 
-        let total = Number(formatEther(todayPot as bigint + totalValue));
+        if (!boughtTickets) {
+            totalValue = 0;
+            ticketsCurrent = totalTicketsToday ? totalTicketsToday : 0;
+        } else {
+            totalValue = ticketPrice as bigint * BigInt(boughtTickets as bigint);
+            ticketsCurrent = tickets;
+        }
+        
+        let total = Number(formatEther(todayPot as bigint + BigInt(totalValue)));
         log("prize:", total);
+        
 
         try {
             // Build the pre-filled message (Markdown-friendly for casts)
-            const message = `I just bought ${tickets} tickets for a chance to win ${Number(total).toFixed(6)} ETH. Try your luck? Let's play! `;
+            const message = `I just bought ${ticketsCurrent} tickets for a chance to win ${Number(total).toFixed(6)} ETH. Try your luck? Let's play! `;
             
             // Canonical Mini App URL (strips query params for clean embed)
             const embeds: [string] = ["https://baselottery.thinhpm.homes"];
-            const result = await sdk.actions.composeCast({text: message, embeds: embeds})
-
-            console.log(result);
-
-            
-            console.log('Compose screen opened with pre-filled cast');
+            await sdk.actions.composeCast({text: message, embeds: embeds})
         } catch (err) {
             console.error('Failed to open compose:', err);
         }
@@ -257,9 +259,7 @@ const HomePage: React.FC<HomePageProps> = ({
                         <input type='number' min={1} value={tickets} onChange={(e) => setTickets(Number(e.target.value))}></input>
                     </div>
                     <button className="btn-check" onClick={payAndSpin}>{statusMsg ? statusMsg: "Pay & Spin"}</button>
-                    {/* {statusMsg && (
-                        <div className="tx-message">{statusMsg}</div>
-                    )} */}
+                    <button className="btn-share" onClick={shareBoughtTickets}>Share</button>
                 </div>
             </div>
             <div className="homepage-card">

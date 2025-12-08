@@ -147,6 +147,26 @@ input[type="number"] {
   background: #1de9b6;
 }
 
+/* Spin Button */
+.btn-share {
+  width: 100%;
+  margin-top: 14px;
+  padding: 14px;
+  background: #00e676;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-share:hover {
+  transform: scale(1.03);
+  background: #1de9b6;
+}
+
 /* ===== Support Card ===== */
 .support-card {
   text-align: center;
