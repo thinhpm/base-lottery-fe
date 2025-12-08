@@ -64,6 +64,9 @@ const HomePage: React.FC<HomePageProps> = ({
         address: contractAddress,
         abi: BaseLotteryABI,
         functionName: "getRequiredETH",
+        query: {
+            refetchInterval: 121000,
+        },
     });
 
     const { data: totalTicketsToday, refetch: refetchTotalTicketsToday } = useReadContract({
@@ -79,7 +82,10 @@ const HomePage: React.FC<HomePageProps> = ({
         address: contractAddress,
         abi: BaseLotteryABI,
         functionName: "getUserTickets",
-        args: address ? [address] : undefined
+        args: address ? [address] : undefined,
+        query: {
+            refetchInterval: 31000,
+        },
     });
 
     useEffect(() => {
