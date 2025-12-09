@@ -40,7 +40,7 @@ const initializeFarcaster = async () => {
 
     return (
         <div>
-        <ConnectMenu />
+        {/* <ConnectMenu /> */}
         {currentPage === 'home' && (
             <HomePage
             setCurrentPage={setCurrentPage}

@@ -17,16 +17,28 @@ interface Ticket {
     number: number
 }
 
-interface DayInfos {
-    pot: bigint,
-    eco: bigint,
-    drawn: boolean,
-    paid: boolean,
-    winningNumber: number,
-    prizeClaimed: boolean,
-    drawTimestamp: string,
-    hasWinner: boolean
-}
+type DayInfosTuple = [
+    bigint,  // pot
+    bigint,  // eco
+    boolean, // drawn
+    boolean, // paid
+    number,  // winningNumber
+    boolean, // prizeClaimed
+    bigint,  // drawTimestamp
+    boolean  // hasWinner
+];
+
+
+// interface DayInfos {
+//     pot: bigint,
+//     eco: bigint,
+//     drawn: boolean,
+//     paid: boolean,
+//     winningNumber: number,
+//     prizeClaimed: boolean,
+//     drawTimestamp: string,
+//     hasWinner: boolean
+// }
 
 
 interface HomePageProps {
@@ -43,7 +55,7 @@ const HomePage: React.FC<HomePageProps> = ({
     const { address } = useWallet();
     const [isLoading, setIsLoading] = useState<boolean>(false); // ← NEW
     const [tickets, setTickets] = useState<number>(1);
-    const [oldDayInfosResult, setOldDayInfoResult] = useState<DayInfos>();
+    const [luckyTicket, setLuckyTicket] = useState<number>();
     const [myTicketsToday, setMyTicketsToday] = useState<number[]>();
     const [boughtTickets, setBoughtTickets] = useState<bigint>();
 
@@ -64,9 +76,9 @@ const HomePage: React.FC<HomePageProps> = ({
     const { data: oldDayInfos} = useReadContract({
         address: contractAddress,
         abi: BaseLotteryABI,
-        functionName: "dayinfos",
+        functionName: "dayInfos",
         args: currentDay ? [Number(currentDay) - 1] : undefined,
-    });
+    }) as { data: DayInfosTuple };
 
     const { data: todayPot, refetch: refetchTodayPot} = useReadContract({
         address: contractAddress,
@@ -106,12 +118,11 @@ const HomePage: React.FC<HomePageProps> = ({
         },
     });
 
-    useEffect(() => {
-        if (oldDayInfos && currentDay) {
-            setOldDayInfoResult(oldDayInfos as DayInfos);
-        }
-
-    }, [currentDay, oldDayInfos])
+   useEffect(() => {
+        if (!oldDayInfos || !currentDay) return;
+        setLuckyTicket(oldDayInfos[4]);
+        
+    }, [currentDay, oldDayInfos]);
 
     useEffect(() => {
         if (myTickets && currentDay) {
@@ -266,7 +277,7 @@ const HomePage: React.FC<HomePageProps> = ({
                         <div><strong>Ticket price:</strong> $0.1 ({ticketPrice ? Number(formatEther(ticketPrice as bigint)).toFixed(6) : "0"} ETH)</div>
                     </div>
                     <div>
-                        <div><strong>Last lucky number:</strong> {oldDayInfosResult?.winningNumber?.toString()}</div>
+                        <div><strong>Last lucky ticket number:</strong> {luckyTicket?.toString()}</div>
                     </div>
                     <div>
                         <div><strong>Total tickets (today):</strong> {totalTicketsToday?.toString()}</div>
