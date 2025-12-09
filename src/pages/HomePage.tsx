@@ -17,6 +17,17 @@ interface Ticket {
     number: number
 }
 
+interface DayInfos {
+    pot: bigint,
+    eco: bigint,
+    drawn: boolean,
+    paid: boolean,
+    winningNumber: number,
+    prizeClaimed: boolean,
+    drawTimestamp: string,
+    hasWinner: boolean
+}
+
 
 interface HomePageProps {
     setCurrentPage: Dispatch<SetStateAction<string>>;
@@ -32,7 +43,7 @@ const HomePage: React.FC<HomePageProps> = ({
     const { address } = useWallet();
     const [isLoading, setIsLoading] = useState<boolean>(false); // ← NEW
     const [tickets, setTickets] = useState<number>(1);
-
+    const [oldDayInfosResult, setOldDayInfoResult] = useState<DayInfos>();
     const [myTicketsToday, setMyTicketsToday] = useState<number[]>();
     const [boughtTickets, setBoughtTickets] = useState<bigint>();
 
@@ -48,6 +59,13 @@ const HomePage: React.FC<HomePageProps> = ({
         address: contractAddress,
         abi: BaseLotteryABI,
         functionName: "currentDay",
+    });
+
+    const { data: oldDayInfos} = useReadContract({
+        address: contractAddress,
+        abi: BaseLotteryABI,
+        functionName: "dayinfos",
+        args: currentDay ? [Number(currentDay) - 1] : undefined,
     });
 
     const { data: todayPot, refetch: refetchTodayPot} = useReadContract({
@@ -87,6 +105,13 @@ const HomePage: React.FC<HomePageProps> = ({
             refetchInterval: 31000,
         },
     });
+
+    useEffect(() => {
+        if (oldDayInfos && currentDay) {
+            setOldDayInfoResult(oldDayInfos as DayInfos);
+        }
+
+    }, [currentDay, oldDayInfos])
 
     useEffect(() => {
         if (myTickets && currentDay) {
@@ -239,6 +264,9 @@ const HomePage: React.FC<HomePageProps> = ({
                     </div>
                     <div>
                         <div><strong>Ticket price:</strong> $0.1 ({ticketPrice ? Number(formatEther(ticketPrice as bigint)).toFixed(6) : "0"} ETH)</div>
+                    </div>
+                    <div>
+                        <div><strong>Last lucky number:</strong> {oldDayInfosResult?.winningNumber?.toString()}</div>
                     </div>
                     <div>
                         <div><strong>Total tickets (today):</strong> {totalTicketsToday?.toString()}</div>
