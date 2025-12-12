@@ -265,7 +265,7 @@ const HomePage: React.FC<HomePageProps> = ({
                 </div>
             </div>
         )}
-        <div className={`${isLoading ? 'hidden' : ''}`}>
+        <div className="homepage-warrap">
             <div className='homepage-card'>
                 <h2 className='homepage-card-header'>Base Lottery</h2>
                 <img className="avatar" src={profile?.profile_image} />

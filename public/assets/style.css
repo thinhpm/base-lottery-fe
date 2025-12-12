@@ -47,6 +47,10 @@ body {
 }
 
 /* ===== General Card Styling ===== */
+.homepage-warrap {
+  margin-bottom: 68px;
+}
+
 .homepage-card {
   background: #ffffff10;
   padding: 18px;
