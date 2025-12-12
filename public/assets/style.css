@@ -251,3 +251,112 @@ input[type="number"] {
     font-size: 14px;
     font-weight: 600;
 }
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #1b3d8a;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.bottom-nav button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 15px;
+
+}
+
+.bottom-nav button.active {
+    color: #4cffb0; /* highlight */
+}
+
+.lb-tabs {
+  display: flex;
+  justify-content: space-between;
+  background: #1b3d8a;
+  padding: 10px;
+  border-radius: 14px;
+  margin-bottom: 14px;
+}
+
+.lb-tab {
+  flex: 1;
+  padding: 10px 0;
+  background: transparent;
+  border: none;
+  color: #c8d7ff;
+  font-weight: 600;
+  border-radius: 12px;
+}
+
+.lb-tab.active {
+  background: #2b55d6;
+  color: #fff;
+}
+
+.lb-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.lb-item {
+  display: flex;
+  align-items: center;
+  background: #15306d;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.lb-rank {
+  width: 26px;
+  height: 26px;
+  background: #2b55d6;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-weight: bold;
+}
+
+.lb-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 14px;
+}
+
+.lb-info {
+  flex: 1;
+}
+
+.lb-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.lb-address {
+  font-size: 12px;
+  color: #9ab3ff;
+}
+
+.lb-total {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4cffb0;
+}
