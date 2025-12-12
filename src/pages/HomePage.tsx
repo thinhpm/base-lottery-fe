@@ -334,14 +334,14 @@ const HomePage: React.FC<HomePageProps> = ({
                     className={currentTab === 'leaderboard' ? 'active' : ''}
                     onClick={() => setCurrentTab('leaderboard')}
                 >
-                    LeaderBoard
+                    Leaderboard
                 </button>
 
                 <button
                     className={currentTab === 'about' ? 'active' : ''}
                     onClick={() => setCurrentTab('about')}
                 >
-                    About
+                    How
                 </button>
             </div>
         </div>
