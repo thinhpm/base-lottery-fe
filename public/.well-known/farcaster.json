@@ -13,16 +13,27 @@
     "description": "Play the daily onchain Base Lottery. Buy tickets, spin, and check if you're the lucky winner!",
     "primaryCategory": "games",
     "tags": [
+      "spin",
+      "win",
+      "prizes",
       "lottery",
-      "game",
-      "onchain",
-      "base",
-      "crypto"
-    ]
+      "fun"
+    ],
+    "screenshotUrls": [
+      "https://baselottery.thinhpm.homes/screenshots_1.png",
+      "https://baselottery.thinhpm.homes/screenshots_2.png",
+      "https://baselottery.thinhpm.homes/screenshots_3.png"
+    ],
+    "ogTitle": "Base Lottery",
+    "ogDescription": "Play the daily onchain Base Lottery. Buy tickets, spin, and check if you're the lucky winner!",
+    "ogImageUrl": "https://baselottery.thinhpm.homes/image.png"
   },
   "accountAssociation": {
     "header": "eyJmaWQiOjE5NjAyOCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDBCOTBGOTcwOTk4OEYwYjkzOTcwM2MzMWVjQTRGYUVmMzRiRUQ0NjEifQ",
     "payload": "eyJkb21haW4iOiJiYXNlbG90dGVyeS50aGluaHBtLmhvbWVzIn0",
     "signature": "qdY3Z904iwPBu0sS1b77IgZucRCohoKkQ9eUsgJZVegwSIymt5pj90Wap9Ueyuh4DCJe+cco86MBlNFAwDJXHxs="
+  },
+  "baseBuilder": {
+    "allowedAddresses": ["0x83f27d55e738c0f2a687c2f36cd797db7c32d810"]
   }
 }
