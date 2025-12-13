@@ -12,6 +12,7 @@ import {contractAddress} from '../cryptophy/ContractAddress';
 import { useWallet } from "../hooks/useWallet";
 import AboutPage from "./AboutPage";
 import LeaderBoardPage from './LeaderBoardPage';
+import UserHistoryPage from './UserHistoryPage';
 
 
 interface Ticket {
@@ -121,7 +122,11 @@ const HomePage: React.FC<HomePageProps> = ({
         },
     });
 
-   useEffect(() => {
+    function formatTicket(ticket: number | string): string {
+        return String(ticket).padStart(5, "0");
+    }
+
+    useEffect(() => {
         if (!oldDayInfos || !currentDay) return;
         setLuckyTicket(oldDayInfos[4]);
         
@@ -294,7 +299,7 @@ const HomePage: React.FC<HomePageProps> = ({
                                 .split(",")
                                 .map((item, i) => (
                                     <span key={i} className="ticket-badge">
-                                        {item.trim()}
+                                        {formatTicket(item.trim())}
                                     </span>
                                 ))}</div>
                             </div>
@@ -315,6 +320,10 @@ const HomePage: React.FC<HomePageProps> = ({
                 </>
             )}
 
+            {currentTab === "history" && (
+                <UserHistoryPage address={address}/>
+            )}
+
             {currentTab === "about" && (
                 <AboutPage />
             )}
@@ -330,11 +339,18 @@ const HomePage: React.FC<HomePageProps> = ({
                     Home
                 </button>
 
+                <button 
+                    className={currentTab === 'history' ? 'active' : ''} 
+                    onClick={() => setCurrentTab('history')}
+                >
+                    History
+                </button>
+
                 <button
                     className={currentTab === 'leaderboard' ? 'active' : ''}
                     onClick={() => setCurrentTab('leaderboard')}
                 >
-                    Leaderboard
+                    Rank
                 </button>
 
                 <button

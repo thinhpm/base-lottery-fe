@@ -364,3 +364,104 @@ input[type="number"] {
   font-weight: 700;
   color: #4cffb0;
 }
+
+/* User History Page */
+.history-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.history-card {
+    background: #1f3570;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.history-day {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 8px;
+}
+
+.history-lucky {
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.history-lucky strong {
+  font-size: 15px;
+  color: #bbdefb;
+}
+
+.history-lucky-number {
+    font-size: 23px;
+    font-weight: bold;
+    margin: 4px 0;
+}
+
+.history-user-tickets strong {
+  font-size: 15px;
+  color: #bbdefb;
+}
+
+.history-pot {
+    color: #4ade80;
+    font-weight: 600;
+}
+
+.history-total {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.history-user-tickets {
+    margin-top: 12px;
+}
+
+.ticket-list {
+    margin-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.ticket-pill {
+    background: #2b4db0;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.history-winner {
+    margin-top: 12px;
+}
+
+.history-winner strong {
+  font-size: 15px;
+  color: #bbdefb;
+}
+
+.history-winner .no-winner {
+  color: #ff0000e0;
+}
+
+.winner-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.winner-row .lb-avatar {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 2px;
+}
+
+.winner-row .lb-name {
+  font-size: 13px;
+}
