@@ -253,7 +253,7 @@ const HomePage: React.FC<HomePageProps> = ({
 
         try {
             // Build the pre-filled message (Markdown-friendly for casts)
-            const message = `I just bought ${ticketsCurrent} tickets for a chance to win ${Number(total).toFixed(6)} ETH. Try your luck? Let's play! `;
+            const message = `I just bought ${ticketsCurrent} tickets on Base Lottery for a chance to win ${Number(total).toFixed(6)} ETH. Try your luck? Let's play! `;
             
             // Canonical Mini App URL (strips query params for clean embed)
             const embeds: [string] = ["https://baselottery.thinhpm.homes"];
