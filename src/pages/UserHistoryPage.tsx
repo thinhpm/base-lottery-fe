@@ -28,6 +28,9 @@ const UserHistoryPage: React.FC<LeaderBoardPageProps> = (
     const [history, setHistory] = useState<UserHistoryItem[]>([]);
 
     function formatTicket(ticket: number | string): string {
+        if (ticket === "" || ticket === 0 || ticket === "0" || ticket == null) {
+            return "";
+        }
         return String(ticket).padStart(5, "0");
     }
 

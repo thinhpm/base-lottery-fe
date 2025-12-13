@@ -123,6 +123,9 @@ const HomePage: React.FC<HomePageProps> = ({
     });
 
     function formatTicket(ticket: number | string): string {
+        if (ticket === "" || ticket === 0 || ticket === "0" || ticket == null) {
+            return "";
+        }
         return String(ticket).padStart(5, "0");
     }
 
@@ -293,15 +296,19 @@ const HomePage: React.FC<HomePageProps> = ({
                             <div><strong>Total tickets (today):</strong> {totalTicketsToday?.toString()}</div>
                         </div>
                         <div>
-                            <div><strong>Your tickets (today):</strong> 
-                            <div className="tickets-list">{myTicketsToday
-                                ?.toString()
-                                .split(",")
-                                .map((item, i) => (
-                                    <span key={i} className="ticket-badge">
-                                        {formatTicket(item.trim())}
-                                    </span>
-                                ))}</div>
+                            <div>
+                                <strong>Your tickets (today):</strong> 
+                                {myTicketsToday && myTicketsToday?.toString().length > 0 && (
+                                    <div className="tickets-list">{myTicketsToday
+                                        ?.toString()
+                                        .split(",")
+                                        .map((item, i) => (
+                                            <span key={i} className="ticket-badge">
+                                                {formatTicket(item.trim())}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
