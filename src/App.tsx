@@ -4,7 +4,6 @@ import '../public/assets/style.css';
 import { useAuth } from './hooks/useAuth';
 import ConnectMenu from './components/ConnectMenu';
 import HomePage from './pages/HomePage';
-// import HistoryPage from './pages/HistoryPage';
 
 import {log} from './hooks/helper'
 
