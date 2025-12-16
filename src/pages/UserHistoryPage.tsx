@@ -19,12 +19,13 @@ interface UserHistoryItem {
 }
 
 interface LeaderBoardPageProps {
-    address: `0x${string}` | undefined
+    address: `0x${string}` | undefined;
+    ethPrice: number | 0
 }
 
-const UserHistoryPage: React.FC<LeaderBoardPageProps> = (
-    address
-) => {
+const UserHistoryPage: React.FC<LeaderBoardPageProps> = ({
+    address, ethPrice
+}) => {
     const [history, setHistory] = useState<UserHistoryItem[]>([]);
 
     function formatTicket(ticket: number | string): string {
@@ -36,8 +37,8 @@ const UserHistoryPage: React.FC<LeaderBoardPageProps> = (
 
     useEffect(() => {
         async function fetchHistory() {
-            log("current address:", address);
-            let currentAddress = address?.address;
+            log("current address:", address, "eth price:", ethPrice);
+            let currentAddress = address;
             try {
                 const res = await fetch(`${BACKEND_API_URL}/baselottery/history?address=${currentAddress}`);
                 if (!res.ok) {
@@ -53,6 +54,19 @@ const UserHistoryPage: React.FC<LeaderBoardPageProps> = (
 
         fetchHistory();
     }, []);
+
+    function ethToUsd(ethAmount: number | string, ethPriceUsd: number): string {
+        if (!ethAmount || Number(ethAmount) === 0) return "0";
+
+        const usd = Number(ethAmount) * ethPriceUsd;
+
+        return usd.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
 
     // if (loading) {
     //     return <div className="lb-loading">Loading history...</div>;
@@ -75,7 +89,7 @@ const UserHistoryPage: React.FC<LeaderBoardPageProps> = (
                             {formatTicket(day.luckyNumber)}
                         </div>
                         <div className="history-pot">
-                            {Number(day.potEth).toFixed(6)} ETH
+                            {Number(day.potEth).toFixed(6)} ETH ({ethToUsd(Number(day.potEth), ethPrice)})
                         </div>
                     </div>
 
