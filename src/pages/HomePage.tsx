@@ -12,6 +12,7 @@ import {contractAddress} from '../cryptophy/ContractAddress';
 import { useWallet } from "../hooks/useWallet";
 import AboutPage from "./AboutPage";
 import LeaderBoardPage from './LeaderBoardPage';
+import UserHistoryPage from './UserHistoryPage';
 
 
 interface Ticket {
@@ -121,7 +122,14 @@ const HomePage: React.FC<HomePageProps> = ({
         },
     });
 
-   useEffect(() => {
+    function formatTicket(ticket: number | string): string {
+        if (ticket === "" || ticket === 0 || ticket === "0" || ticket == null) {
+            return "";
+        }
+        return String(ticket).padStart(5, "0");
+    }
+
+    useEffect(() => {
         if (!oldDayInfos || !currentDay) return;
         setLuckyTicket(oldDayInfos[4]);
         
@@ -245,7 +253,7 @@ const HomePage: React.FC<HomePageProps> = ({
 
         try {
             // Build the pre-filled message (Markdown-friendly for casts)
-            const message = `I just bought ${ticketsCurrent} tickets for a chance to win ${Number(total).toFixed(6)} ETH. Try your luck? Let's play! `;
+            const message = `I just bought ${ticketsCurrent} tickets on Base Lottery for a chance to win ${Number(total).toFixed(6)} ETH. Try your luck? Let's play! `;
             
             // Canonical Mini App URL (strips query params for clean embed)
             const embeds: [string] = ["https://baselottery.thinhpm.homes"];
@@ -288,15 +296,19 @@ const HomePage: React.FC<HomePageProps> = ({
                             <div><strong>Total tickets (today):</strong> {totalTicketsToday?.toString()}</div>
                         </div>
                         <div>
-                            <div><strong>Your tickets (today):</strong> 
-                            <div className="tickets-list">{myTicketsToday
-                                ?.toString()
-                                .split(",")
-                                .map((item, i) => (
-                                    <span key={i} className="ticket-badge">
-                                        {item.trim()}
-                                    </span>
-                                ))}</div>
+                            <div>
+                                <strong>Your tickets (today):</strong> 
+                                {myTicketsToday && myTicketsToday?.toString().length > 0 && (
+                                    <div className="tickets-list">{myTicketsToday
+                                        ?.toString()
+                                        .split(",")
+                                        .map((item, i) => (
+                                            <span key={i} className="ticket-badge">
+                                                {formatTicket(item.trim())}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -315,6 +327,10 @@ const HomePage: React.FC<HomePageProps> = ({
                 </>
             )}
 
+            {currentTab === "history" && (
+                <UserHistoryPage address={address}/>
+            )}
+
             {currentTab === "about" && (
                 <AboutPage />
             )}
@@ -330,11 +346,18 @@ const HomePage: React.FC<HomePageProps> = ({
                     Home
                 </button>
 
+                <button 
+                    className={currentTab === 'history' ? 'active' : ''} 
+                    onClick={() => setCurrentTab('history')}
+                >
+                    History
+                </button>
+
                 <button
                     className={currentTab === 'leaderboard' ? 'active' : ''}
                     onClick={() => setCurrentTab('leaderboard')}
                 >
-                    Leaderboard
+                    Rank
                 </button>
 
                 <button
