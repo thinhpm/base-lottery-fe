@@ -35,12 +35,18 @@ const UserHistoryPage: React.FC<LeaderBoardPageProps> = ({
         return String(ticket).padStart(5, "0");
     }
 
+    function getNormalDay() {
+        return new Date().toISOString().slice(0, 10);
+    }
+
     useEffect(() => {
         async function fetchHistory() {
             log("current address:", address, "eth price:", ethPrice);
             let currentAddress = address;
+            let normalDay = getNormalDay();
+
             try {
-                const res = await fetch(`${BACKEND_API_URL}/baselottery/history?address=${currentAddress}`);
+                const res = await fetch(`${BACKEND_API_URL}/baselottery/history?address=${currentAddress}&normal_day=${normalDay}`);
                 if (!res.ok) {
                     log("fetch user history failed");
                     return;
