@@ -62,6 +62,7 @@ const HomePage: React.FC<HomePageProps> = ({
     const [myTicketsToday, setMyTicketsToday] = useState<number[]>();
     const [boughtTickets, setBoughtTickets] = useState<bigint>();
     const [currentTab, setCurrentTab] = useState('home');
+    const [ethPrice, setEthPrice] = useState<number>(0);
 
     const [statusMsg, setStatusMsg] = useState<string | null>(null);
     const [txHash, setTxHash] = useState<`0x${string}` | undefined>(undefined);
@@ -128,6 +129,10 @@ const HomePage: React.FC<HomePageProps> = ({
         }
         return String(ticket).padStart(5, "0");
     }
+
+    useEffect(() => {
+        fetchEthPriceUSD().then(setEthPrice);
+    }, []);
 
     useEffect(() => {
         if (!oldDayInfos || !currentDay) return;
@@ -256,11 +261,32 @@ const HomePage: React.FC<HomePageProps> = ({
             const message = `I just bought ${ticketsCurrent} tickets on Base Lottery for a chance to win ${Number(total).toFixed(6)} ETH. Try your luck? Let's play! `;
             
             // Canonical Mini App URL (strips query params for clean embed)
-            const embeds: [string] = ["https://baselottery.thinhpm.homes"];
+            const embeds: [string] = ["https://baselottery.thinhpm.homes"]; 
             await sdk.actions.composeCast({text: message, embeds: embeds})
         } catch (err) {
             console.error('Failed to open compose:', err);
         }
+    }
+
+    async function fetchEthPriceUSD(): Promise<number> {
+        const res = await fetch(
+            "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+        );
+        const data = await res.json();
+        return data.ethereum.usd;
+    }
+
+    function ethToUsd(ethAmount: number | string, ethPriceUsd: number): string {
+        if (!ethAmount || Number(ethAmount) === 0) return "0";
+
+        const usd = Number(ethAmount) * ethPriceUsd;
+
+        return usd.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
     }
 
     return (
@@ -284,10 +310,10 @@ const HomePage: React.FC<HomePageProps> = ({
                     <div className="card">
                         <h3>Lottery Stats</h3>
                         <div>
-                            <div><strong>Today prize:</strong> {todayPot ? Number(formatEther(todayPot as bigint)).toFixed(6): "0"} ETH</div>
+                            <div><strong>Today prize:</strong> {todayPot ? Number(formatEther(todayPot as bigint)).toFixed(6): "0"} ETH ({ethToUsd(todayPot ? formatEther(todayPot as bigint) : "0", ethPrice)})</div>
                         </div>
                         <div>
-                            <div><strong>Ticket price:</strong> $0.1 ({ticketPrice ? Number(formatEther(ticketPrice as bigint)).toFixed(6) : "0"} ETH)</div>
+                            <div><strong>Ticket price:</strong> {ticketPrice ? Number(formatEther(ticketPrice as bigint)).toFixed(6) : "0"} ETH ($0.1)</div>
                         </div>
                         <div>
                             <div><strong>Last lucky ticket number:</strong> {luckyTicket?.toString()}</div>
@@ -328,7 +354,7 @@ const HomePage: React.FC<HomePageProps> = ({
             )}
 
             {currentTab === "history" && (
-                <UserHistoryPage address={address}/>
+                <UserHistoryPage address={address} ethPrice={ethPrice}/>
             )}
 
             {currentTab === "about" && (
