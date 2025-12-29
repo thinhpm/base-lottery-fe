@@ -204,6 +204,11 @@ const HomePage: React.FC<HomePageProps> = ({
         }
     }, [receiptLoading, receipt]);
 
+    function toHex(str: string) {
+        return Array.from(new TextEncoder().encode(str))
+            .map(b => b.toString(16).padStart(2, "0"))
+            .join("");
+    }
 
     async function payAndSpin() {
         if (!ticketPrice || tickets <= 0) {
@@ -214,6 +219,7 @@ const HomePage: React.FC<HomePageProps> = ({
         try {
             // Calculate ETH to send
             const totalValue = ticketPrice as bigint * BigInt(tickets);
+            const builderSuffix = ("0x" + toHex("bc_wwy5pgeh")) as `0x${string}`;
 
             log("Paying:", {
                 tickets,
@@ -226,6 +232,7 @@ const HomePage: React.FC<HomePageProps> = ({
                 abi: BaseLotteryABI,
                 functionName: "buyTickets",
                 args: [BigInt(tickets)],
+                dataSuffix: builderSuffix,
                 value: totalValue,
             });
             
